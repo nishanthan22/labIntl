@@ -1,3 +1,4 @@
+
 # Steps to run the project in the local
 1. Clone the project in the workspace
 2. Open the project in PyCharm IDE
@@ -8,3 +9,11 @@
 7. Finally, in the local terminal of PyCharm run "python manage.py runserver" command to start the server
 
 **Note: If you want to perform any changes, please create a new branch and perform the changes**
+
+# Internet Applications and Distributed Systems
+
+Lab Team members
+- Prithvika Babu
+- Sasmita Behera
+- Nishanthan Ravichandran
+- Meghna Singh

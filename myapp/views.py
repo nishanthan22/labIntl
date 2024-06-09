@@ -23,4 +23,9 @@ def index(request):
 
     return response
 
+def about(request):
+    response = HttpResponse()
+    heading1 = '<p>' + 'This is an eBook Website ' + '</p>'
+    response.write(heading1)
+    return response
 

@@ -1,4 +1,5 @@
 from django.http import HttpResponse, Http404
+from django.shortcuts import get_object_or_404
 from .models import Book, Publisher
 
 
@@ -33,8 +34,7 @@ def about(request):
 
 #Detail view to display the details of the book
 def detail(request, book_id):
-    book = Book.objects.get(pk=book_id)
-
+    book = get_object_or_404(Book, pk=book_id)  # This will raise a 404 error if the book does not exist
     details_response = HttpResponse()
     details_response.write('<h1>Details of the book with id #' + str(book_id) + '</h1>')
     book_name = book.title.upper()

@@ -1,0 +1,25 @@
+body {
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+/* Styles for <h1> Tags */
+h1 {
+    font-size: 24px;
+    color: #555;
+    font-style: italic;
+    position: relative;
+}
+
+/* .hbar1 Class */
+.hbar1 {
+    display: inline;
+    margin: 15px;
+}
+
+/* Optional Additional Styles */
+p {
+    line-height: 1.5;
+}

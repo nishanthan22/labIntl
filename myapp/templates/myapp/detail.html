@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Detail</title>
+</head>
+<body>
+    <h1>Details of the book with id #{{ book.id }}</h1>
+    <p>The {{ book.title.upper }} costs ${{ book.price }} and is published by {{ book.publisher.name }}.</p>
+    <p><a href="{% url 'myapp:index' %}">Go back to main page</a></p>
+</body>
+</html>

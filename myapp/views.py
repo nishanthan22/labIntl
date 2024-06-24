@@ -8,10 +8,10 @@ def index(request):
     return render(request, 'myapp/index0.html', {'booklist': booklist})  # passing booklist to template
 
 def about(request):
-    return render(request, 'myapp/about.html')
+    return render(request, 'myapp/about0.html')
 
 #Detail view to display the details of the book
 def detail(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
-    return render(request, 'myapp/detail.html', {'book': book})
+    return render(request, 'myapp/detail0.html', {'book': book})
 

@@ -5,7 +5,7 @@ from django.shortcuts import render
 
 def index(request):
     booklist = Book.objects.all().order_by('id')[:10]
-    return render(request, 'myapp/index.html', {'booklist': booklist})  # passing booklist to template
+    return render(request, 'myapp/index0.html', {'booklist': booklist})  # passing booklist to template
 
 def about(request):
     return render(request, 'myapp/about.html')

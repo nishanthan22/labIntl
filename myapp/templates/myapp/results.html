@@ -4,15 +4,19 @@
     {% if name %}
         <p>Hello {{ name }}!</p>
     {% endif %}
-    {% if booklist %}
+
+    <p>Category: {{ category|default:"None selected" }}</p>
+
+    {% if book_list %}
         <h3>Books in the selected category:</h3>
         <ul>
-            {% for book in booklist %}
-                <li>{{ book.title }}</li>
+            {% for book in book_list %}
+                <li>{{ book.title }} - ${{ book.price }}</li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>No books found in this category.</p>
+        <p>No books found.</p>
     {% endif %}
+
     <p><a href="{% url 'myapp:findbooks' %}">Search again</a></p>
 {% endblock %}

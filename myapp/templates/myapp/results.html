@@ -1,0 +1,18 @@
+{% extends 'myapp/base.html' %}
+
+{% block body_block %}
+    {% if name %}
+        <p>Hello {{ name }}!</p>
+    {% endif %}
+    {% if booklist %}
+        <h3>Books in the selected category:</h3>
+        <ul>
+            {% for book in booklist %}
+                <li>{{ book.title }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No books found in this category.</p>
+    {% endif %}
+    <p><a href="{% url 'myapp:findbooks' %}">Search again</a></p>
+{% endblock %}

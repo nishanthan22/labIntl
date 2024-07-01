@@ -1,0 +1,28 @@
+{% extends 'myapp/base.html' %}
+
+{% block myhdg %}
+    Hello Team2
+{#    the above line is preset and not a variable. please check#}
+{% endblock %}
+
+{% block body_block %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>eBook Website</title>
+</head>
+<body>
+    {% if booklist %}
+        <h2>List of Books</h2>
+        <ol>
+            {% for book in booklist %}
+                <li><a href="{% url 'myapp:detail' book.id %}">{{ book.title }}</a></li>
+            {% endfor %}
+        </ol>
+    {% else %}
+        <strong>There are no available books!</strong>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

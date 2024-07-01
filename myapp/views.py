@@ -1,45 +1,50 @@
 from django.http import HttpResponse, Http404
+from django.shortcuts import get_object_or_404
 from .models import Book, Publisher
+from django.shortcuts import render
+from django.http import HttpResponse
+from .forms import FeedbackForm, SearchForm
 
 
 def index(request):
-    response = HttpResponse()
-
-    # Get the list of books ordered by primary key
-    booklist = Book.objects.all().order_by('id')
-
-    # Get the list of publishers ordered by city name in descending order
-    publisherlist = Publisher.objects.all().order_by('-city')
-
-    # Add books to response
-    response.write('<h1>List of Books</h1>')
-    for book in booklist:
-        response.write(f'<p>{book.id}. {book.title}</p>')
-
-    # Add publishers to response
-    response.write('<h1>List of Publishers</h1>')
-    for publisher in publisherlist:
-        response.write(f'<p>{publisher.name} located in {publisher.city}</p>')
-
-    return response
-
+    booklist = Book.objects.all().order_by('id')[:10]
+    return render(request, 'myapp/index0.html', {'booklist': booklist})  # passing booklist to template
 
 def about(request):
-    response = HttpResponse()
-    heading1 = '<p>' + 'This is an eBook Website ' + '</p>'
-    response.write(heading1)
-    return response
-
+    return render(request, 'myapp/about0.html')
 
 #Detail view to display the details of the book
 def detail(request, book_id):
-    book = Book.objects.get(pk=book_id)
+    book = get_object_or_404(Book, pk=book_id)
+    return render(request, 'myapp/detail0.html', {'book': book})
 
-    details_response = HttpResponse()
-    details_response.write('<h1>Details of the book with id #' + str(book_id) + '</h1>')
-    book_name = book.title.upper()
-    book_price = book.price
-    book_publisher = book.publisher.name
-    details_response.write('<p> The ' + book_name + ' costs $' + str(book_price) + ' and, published by '
-                           + book_publisher + '</p>')
-    return details_response
+def getFeedback(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = form.cleaned_data['feedback']
+            if feedback == 'B':
+                choice = ' to borrow books.'
+            elif feedback == 'P':
+                choice = ' to purchase books.'
+            else: choice = ' None.'
+            return render(request, 'myapp/fb_results.html', {'choice':choice})
+        else:
+            return HttpResponse('Invalid data')
+    else:
+        form = FeedbackForm()
+        return render(request, 'myapp/feedback.html', {'form':form})
+
+def findbooks(request):
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            category = form.cleaned_data['category']
+            booklist = Book.objects.filter(category=category)  # Assuming Book model has a category field
+            return render(request, 'myapp/results.html', {'name': name, 'booklist': booklist})
+        else:
+            return render(request, 'myapp/findbooks.html', {'form': form, 'error': 'Invalid data'})
+    else:
+        form = SearchForm()
+    return render(request, 'myapp/findbooks.html', {'form': form})

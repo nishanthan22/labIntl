@@ -65,18 +65,21 @@ def place_order(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            books = form.cleaned_data['books']
             order = form.save(commit=False)
+            order.save()
+            form.save_m2m()
             member = order.member
             type = order.order_type
-            order.save()
             if type == 1:
                 for b in order.books.all():
                     member.borrowed_books.add(b)
+
+            books = order.books.all()
             return render(request, 'myapp/order_response.html', {'books': books, 'order': order})
         else:
             return render(request, 'myapp/placeorder.html', {'form': form})
 
     else:
         form = OrderForm()
-        return render(request, 'myapp/placeorder.html', {'form' : form})
+        return render(request, 'myapp/placeorder.html', {'form': form})
+

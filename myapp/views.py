@@ -1,10 +1,10 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
-from .models import Book, Publisher
-from django.shortcuts import render
+from .models import Book, Publisher, Review
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .forms import FeedbackForm, SearchForm, OrderForm
-
+from .forms import FeedbackForm, SearchForm, OrderForm, ReviewForm
+from django.utils import timezone
 
 def index(request):
     booklist = Book.objects.all().order_by('id')[:10]
@@ -83,3 +83,26 @@ def place_order(request):
         form = OrderForm()
         return render(request, 'myapp/placeorder.html', {'form': form})
 
+def review(request):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            rating = form.cleaned_data['rating']
+            if 1 <= rating <= 5:
+                review = form.save(commit=False)
+                review.date = timezone.now()
+                review.save()
+
+                # Update num_reviews field in Book model
+                book = review.book
+                book.num_reviews += 1
+                book.save()
+
+                return redirect('myapp:index')
+            else:
+                form.add_error('rating', 'You must enter a rating between 1 and 5!')
+        else:
+            return render(request, 'myapp/review.html', {'form': form})
+    else:
+        form = ReviewForm()
+    return render(request, 'myapp/review.html', {'form': form})

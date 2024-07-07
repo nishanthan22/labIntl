@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from .models import Book, Publisher
 from django.shortcuts import render
 from django.http import HttpResponse
-from .forms import FeedbackForm, SearchForm
+from .forms import FeedbackForm, SearchForm, OrderForm
 
 
 def index(request):
@@ -59,3 +59,27 @@ def findbooks(request):
     else:
         form = SearchForm()
     return render(request, 'myapp/findbooks.html', {'form': form})
+
+
+def place_order(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.save()
+            form.save_m2m()
+            member = order.member
+            type = order.order_type
+            if type == 1:
+                for b in order.books.all():
+                    member.borrowed_books.add(b)
+
+            books = order.books.all()
+            return render(request, 'myapp/order_response.html', {'books': books, 'order': order})
+        else:
+            return render(request, 'myapp/placeorder.html', {'form': form})
+
+    else:
+        form = OrderForm()
+        return render(request, 'myapp/placeorder.html', {'form': form})
+

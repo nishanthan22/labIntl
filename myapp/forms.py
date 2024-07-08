@@ -4,10 +4,15 @@ from .models import Order, Review
 
 class FeedbackForm(forms.Form):
     FEEDBACK_CHOICES = [
-        ('B', 'Borrow'),
-        ('P', 'Purchase'),
+        ('B', 'Borrow books'),
+        ('P', 'Purchase books'),
+        ('N', 'None')
     ]
-    feedback = forms.ChoiceField(choices=FEEDBACK_CHOICES)
+    feedback = forms.MultipleChoiceField(
+        choices=FEEDBACK_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        label="Please provide your feedback"
+    )
 
 
 class SearchForm(forms.Form):

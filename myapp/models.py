@@ -79,3 +79,4 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.reviewer} - {self.book.title}"
+

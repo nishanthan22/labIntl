@@ -4,4 +4,9 @@
     <h2>{{ choice }}</h2>
     <p><a href="{% url 'myapp:feedback' %}">Provide more feedback</a></p>
     <p><a href="{% url 'myapp:index' %}">Back to main page</a></p>
+    <ul>
+        {% for choice in choices %}
+            <li>{{ choice }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

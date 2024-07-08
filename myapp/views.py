@@ -3,8 +3,14 @@ from django.shortcuts import get_object_or_404
 from .models import Book, Publisher, Review
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+<<<<<<< HEAD
 from .forms import FeedbackForm, SearchForm, OrderForm, ReviewForm
 from django.utils import timezone
+=======
+from .forms import FeedbackForm, SearchForm, ReviewForm
+from django.utils import timezone
+
+>>>>>>> master-clone
 
 def index(request):
     booklist = Book.objects.all().order_by('id')[:10]
@@ -63,6 +69,7 @@ def findbooks(request):
         form = SearchForm()
     return render(request, 'myapp/findbooks.html', {'form': form})
 
+<<<<<<< HEAD
 
 def place_order(request):
     if request.method == 'POST':
@@ -86,6 +93,8 @@ def place_order(request):
         form = OrderForm()
         return render(request, 'myapp/placeorder.html', {'form': form})
 
+=======
+>>>>>>> master-clone
 def review(request):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -105,7 +114,16 @@ def review(request):
             else:
                 form.add_error('rating', 'You must enter a rating between 1 and 5!')
         else:
+<<<<<<< HEAD
             return render(request, 'myapp/review.html', {'form': form})
     else:
         form = ReviewForm()
     return render(request, 'myapp/review.html', {'form': form})
+=======
+            # Display form validation errors
+            return render(request, 'myapp/review.html', {'form': form})
+    else:
+        form = ReviewForm()
+    return render(request, 'myapp/review.html', {'form': form})
+
+>>>>>>> master-clone

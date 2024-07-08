@@ -1,6 +1,10 @@
 from django import forms
+<<<<<<< HEAD
 from .models import Order, Review
 
+=======
+from .models import Review
+>>>>>>> master-clone
 
 class FeedbackForm(forms.Form):
     FEEDBACK_CHOICES = [
@@ -25,6 +29,7 @@ class SearchForm(forms.Form):
                                  label='Select a category:')
     max_price = forms.IntegerField(min_value=0, required=True, label='Maximum Price')
 
+<<<<<<< HEAD
 
 class OrderForm(forms.ModelForm):
     class Meta:
@@ -34,6 +39,8 @@ class OrderForm(forms.ModelForm):
         labels = {'member': 'Member name'}
 
 
+=======
+>>>>>>> master-clone
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
@@ -42,4 +49,8 @@ class ReviewForm(forms.ModelForm):
         labels = {
             'reviewer': 'Please enter a valid email',
             'rating': 'Rating: An integer between 1 (worst) and 5 (best)'
+<<<<<<< HEAD
         }
+=======
+        }
+>>>>>>> master-clone

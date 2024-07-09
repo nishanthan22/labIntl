@@ -1,10 +1,13 @@
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from .models import Book, Publisher, Review
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import FeedbackForm, SearchForm, OrderForm, ReviewForm
 from django.utils import timezone
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.urls import reverse
 
 def index(request):
     booklist = Book.objects.all().order_by('id')[:10]
@@ -108,3 +111,25 @@ def review(request):
     else:
         form = ReviewForm()
     return render(request, 'myapp/review.html', {'form': form})
+
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(reverse('myapp:index'))
+            else:
+                return HttpResponse('Your account is disabled.')
+        else:
+            return HttpResponse('Invalid login details.')
+    else:
+        return render(request, 'myapp/login.html')
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse(('myapp:index')))

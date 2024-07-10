@@ -28,7 +28,6 @@ class SearchForm(forms.Form):
                                  label='Select a category:')
     max_price = forms.IntegerField(min_value=0, required=True, label='Maximum Price')
 
-
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order

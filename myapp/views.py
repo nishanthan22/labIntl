@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import FeedbackForm, SearchForm, OrderForm, ReviewForm
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
 
 def index(request):
     booklist = Book.objects.all().order_by('id')[:10]
@@ -49,9 +51,11 @@ def findbooks(request):
             name = form.cleaned_data['name']
             category = form.cleaned_data['category']
             max_price = form.cleaned_data['max_price']
+            min_price = form.cleaned_data['min_price']
 
             if category:
                 book_list = Book.objects.filter(category=category, price__lte=max_price)
+
             else:
                 book_list = Book.objects.filter(price__lte=max_price)
 
@@ -108,3 +112,17 @@ def review(request):
     else:
         form = ReviewForm()
     return render(request, 'myapp/review.html', {'form': form})
+
+@login_required
+def chk_reviews(request, book_id):
+    user = request.user
+    book = get_object_or_404(Book, pk=book_id)
+    if user.groups.filter(name='Member').exists():
+        reviews = Review.objects.filter(book=book)
+        if reviews.exists():
+            avg_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+            return render(request, 'myapp/chk_reviews.html', {'avg_rating': avg_rating, 'book': book})
+        else:
+            return render(request, 'myapp/chk_reviews.html', {'message': 'No reviews submitted for this book.'})
+    else:
+        return render(request, 'myapp/chk_reviews.html', {'message': 'You are not a registered member!'})

@@ -11,4 +11,5 @@ urlpatterns = [
     path('findbooks/', views.findbooks, name='findbooks'),
     path('place_order/', views.place_order, name='place_order'),
     path('review/', views.review, name='review'),
+    path('chk_reviews/<int:book_id>/', views.chk_reviews, name='chk_reviews'),
 ]

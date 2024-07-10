@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check Reviews</title>
+</head>
+<body>
+    <h1>Review for {{ book.title }}</h1>
+    {% if avg_rating %}
+        <p>Average Rating: {{ avg_rating }}</p>
+    {% elif message %}
+        <p>{{ message }}</p>
+    {% endif %}
+</body>
+</html>

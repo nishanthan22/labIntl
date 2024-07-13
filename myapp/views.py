@@ -7,6 +7,9 @@ from .forms import FeedbackForm, SearchForm, OrderForm, ReviewForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
+from django.utils import timezone
+from datetime import timedelta
+import random
 
 def index(request):
     booklist = Book.objects.all().order_by('id')[:10]
@@ -14,7 +17,21 @@ def index(request):
 
 
 def about(request):
-    return render(request, 'myapp/about0.html')
+    lucky_num = request.COOKIES.get('lucky_num')
+    if lucky_num:
+        mynum = int(lucky_num)
+    else:
+        # Generate a random number between 1 and 100
+        mynum = random.randint(1, 100)
+
+    # Prepare the response
+    response = render(request, 'myapp/about0.html', {'mynum': mynum})
+
+    # Set the cookie to expire after 5 minutes using max_age
+    max_age = 5 * 60  # 5 minutes in seconds
+    response.set_cookie('lucky_num', mynum, max_age=max_age)
+
+    return response
 
 
 # Detail view to display the details of the book

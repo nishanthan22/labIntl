@@ -12,6 +12,15 @@
     <title>eBook Website</title>
 </head>
 <body>
+
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}! <a href="{% url 'myapp:logout' %}">Logout</a></p>
+    {% else %}
+        <p><a href="{% url 'myapp:login' %}">Login</a></p>
+    {% endif %}
+
+    <p>{{ message }}</p>  <!-- Displaying the last login message -->
+    
     {% if booklist %}
         <h2>List of Books</h2>
         <ol>

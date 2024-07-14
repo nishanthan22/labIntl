@@ -14,8 +14,15 @@ import random
 
 def index(request):
     booklist = Book.objects.all().order_by('id')[:10]
-    return render(request, 'myapp/index0.html', {'booklist': booklist})  # passing booklist to template
 
+    # Checking if last_login exists in session
+    last_login = request.session.get('last_login')
+    if last_login:
+        message = f"Your last login was at {last_login}."
+    else:
+        message = "Your last login was more than one hour ago."
+
+    return render(request, 'myapp/index0.html', {'booklist': booklist, 'message': message})
 
 def about(request):
     lucky_num = request.COOKIES.get('lucky_num')
@@ -140,6 +147,8 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
+                request.session['last_login'] = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+                request.session.set_expiry(3600)  # 1 hour expiry
                 return HttpResponseRedirect(reverse('myapp:index'))
             else:
                 return HttpResponse('Your account is disabled.')

@@ -5,6 +5,15 @@
     <title>eBook Website</title>
 </head>
 <body>
+
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}! <a href="{% url 'myapp:logout' %}">Logout</a></p>
+    {% else %}
+        <p><a href="{% url 'myapp:login' %}">Login</a></p>
+    {% endif %}
+    
+    <p>{{ message }}</p>  <!-- Displaying the last login message -->
+
     {% if booklist %}
         <h2>List of Books</h2>
         <ol>
@@ -17,5 +26,10 @@
     {% endif %}
     <p><a href="{% url 'myapp:about' %}">About page</a></p>
     <p><a href="{% url 'myapp:place_order' %}">Place order</a></p>
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}! <a href="{% url 'myapp:logout' %}">Logout</a></p>
+    {% else %}
+        <p><a href="{% url 'myapp:login' %}">Login</a></p>
+    {% endif %}
 </body>
 </html>
